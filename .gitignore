@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.codebuddy/memory/2026-08-10.md
+.codebuddy/plans/object-info-key-copy-button_2ec483fa.md
+.idea/.gitignore
+.idea/bucketdock.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/Project_Default.xml
