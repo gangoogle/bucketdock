@@ -71,6 +71,7 @@ export function ObjectInfoModal({
   const [saving, setSaving] = React.useState(false);
   const [metadata, setMetadata] = React.useState<ObjectMetadata | null>(null);
   const [urlCopied, setUrlCopied] = React.useState(false);
+  const [keyCopied, setKeyCopied] = React.useState(false);
   const connection = useAppStore((state) =>
     state.connections.find((item) => item.id === connectionId),
   );
@@ -95,6 +96,7 @@ export function ObjectInfoModal({
     setLoading(true);
     setMetadata(null);
     setUrlCopied(false);
+    setKeyCopied(false);
     setMetaRows([]);
     getObjectMetadata(connectionId, bucket, objectKey)
       .then((m) => {
@@ -201,8 +203,34 @@ export function ObjectInfoModal({
             </h3>
             <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
               <dt className="text-neutral-500">Key</dt>
-              <dd className="truncate font-mono text-xs break-all">
-                {objectKey}
+              <dd className="min-w-0">
+                <div className="flex items-center gap-1">
+                  <span className="min-w-0 flex-1 truncate font-mono text-xs break-all">
+                    {objectKey}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title="Copy key"
+                    aria-label="Copy key"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(objectKey);
+                        setKeyCopied(true);
+                        toast.success("Key copied");
+                        window.setTimeout(() => setKeyCopied(false), 1500);
+                      } catch (err) {
+                        toast.error(`Failed to copy key: ${err}`);
+                      }
+                    }}
+                  >
+                    {keyCopied ? (
+                      <Check className="w-3.5 h-3.5 text-green-500" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </Button>
+                </div>
               </dd>
               <dt className="text-neutral-500">Size</dt>
               <dd>{formatSize(metadata.size)}</dd>
